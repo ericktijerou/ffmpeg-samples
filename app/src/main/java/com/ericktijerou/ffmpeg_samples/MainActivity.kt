@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
             applicationContext
         )
     }
+
     private val audio2: File by lazy {
         Utils.copyFileToExternalStorage(
             R.raw.audio2,
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             applicationContext
         )
     }
+
     private val audio3: File by lazy {
         Utils.copyFileToExternalStorage(
             R.raw.audio3,
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
             applicationContext
         )
     }
+
     private val video: File by lazy {
         Utils.copyFileToExternalStorage(
             R.raw.video,
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity() {
             applicationContext
         )
     }
+
     private val video2: File by lazy {
         Utils.copyFileToExternalStorage(
             R.raw.video2,
@@ -46,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             applicationContext
         )
     }
+
     private val videoSmall1: File by lazy {
         Utils.copyFileToExternalStorage(
             R.raw.video_small_1,
@@ -53,6 +58,7 @@ class MainActivity : AppCompatActivity() {
             applicationContext
         )
     }
+
     private val images: Array<File> by lazy {
         arrayOf(
             Utils.copyFileToExternalStorage(R.drawable.image1, "image1.png", applicationContext),
@@ -62,6 +68,7 @@ class MainActivity : AppCompatActivity() {
             Utils.copyFileToExternalStorage(R.drawable.image5, "image5.png", applicationContext)
         )
     }
+
     private val font: File by lazy {
         Utils.copyFileToExternalStorage(
             R.font.roboto_black,
@@ -69,6 +76,8 @@ class MainActivity : AppCompatActivity() {
             applicationContext
         )
     }
+
+    var progressListener: ProgressListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -15,4 +15,7 @@
     <string name="txt_audio_section">Audio Tools</string>
     <string name="txt_video_section">Video Tools</string>
     <string name="txt_image_section">Image Tools</string>
+    <string name="label_stop">Stop</string>
+    <string name="label_progress">progress</string>
+    <string name="label_name">Name</string>
 </resources>
