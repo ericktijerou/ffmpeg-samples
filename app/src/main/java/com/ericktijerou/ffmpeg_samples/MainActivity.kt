@@ -124,15 +124,20 @@ class MainActivity : AppCompatActivity(), FFmpegCallback {
                 .callback(this@MainActivity)
                 .merge()
 
-            //ProgressDialog.show(supportFragmentManager, AudioVideoMerger.TAG)
+            ProgressDialog.show(supportFragmentManager, AudioVideoMerger.TAG)
         }
     }
 
     override fun onProgress(progress: String) {
-
+        progressListener?.run {
+            this.onProgress(progress)
+        }
     }
 
     override fun onSuccess(convertedFile: File, type: String) {
+        progressListener?.run {
+            this.onDismiss()
+        }
         VideoDialog.show(supportFragmentManager, convertedFile)
     }
 
