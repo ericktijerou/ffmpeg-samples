@@ -53,17 +53,15 @@ class AudioVideoMerger private constructor(private val context: Context) {
             video!!.path,
             "-i",
             audio!!.path,
+            "-filter_complex",
+            "[0:1][1] amix=inputs=2:duration=shortest[a]",
+            "-map",
+            "0:0",
+            "-map",
+            "[a]",
             "-c:v",
             "copy",
-            "-c:a",
-            "aac",
-            "-strict",
-            "experimental",
-            "-map",
-            "0:v:0",
-            "-map",
-            "1:a:0",
-            "-shortest",
+            "-y",
             outputLocation.path
         )
         FFmpegKit.executeAsync(cmd,
@@ -84,8 +82,7 @@ class AudioVideoMerger private constructor(private val context: Context) {
                 FileManager(context).refreshGallery(outputLocation.path, context)
                 callback?.onSuccess(outputLocation, "")
             }, {
-                Log.d(TAG, "LOOOOOOOG")
-                // CALLED WHEN SESSION PRINTS LOGS
+                callback?.onProgress(it.message)
             }) {
             Log.d(TAG, "statistics")
             // CALLED WHEN SESSION GENERATES STATISTICS
