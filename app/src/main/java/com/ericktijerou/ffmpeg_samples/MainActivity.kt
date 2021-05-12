@@ -3,16 +3,18 @@ package com.ericktijerou.ffmpeg_samples
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.ericktijerou.ffmpeg_samples.util.Utils
+import com.ericktijerou.ffmpeg_samples.util.AudioVideoMerger
+import com.ericktijerou.ffmpeg_samples.util.FileManager
 import java.io.File
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FFmpegCallback {
 
     private val audio: File by lazy {
-        Utils.copyFileToExternalStorage(
+        FileManager(this).copyFileToExternalStorage(
             R.raw.audio,
             "audio.mp3",
             applicationContext
@@ -20,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val audio2: File by lazy {
-        Utils.copyFileToExternalStorage(
+        FileManager(this).copyFileToExternalStorage(
             R.raw.audio2,
             "audio2.mp3",
             applicationContext
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val audio3: File by lazy {
-        Utils.copyFileToExternalStorage(
+        FileManager(this).copyFileToExternalStorage(
             R.raw.audio3,
             "audio3.mp3",
             applicationContext
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val video: File by lazy {
-        Utils.copyFileToExternalStorage(
+        FileManager(this).copyFileToExternalStorage(
             R.raw.video,
             "video.mp4",
             applicationContext
@@ -44,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val video2: File by lazy {
-        Utils.copyFileToExternalStorage(
+        FileManager(this).copyFileToExternalStorage(
             R.raw.video2,
             "video2.mp4",
             applicationContext
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val videoSmall1: File by lazy {
-        Utils.copyFileToExternalStorage(
+        FileManager(this).copyFileToExternalStorage(
             R.raw.video_small_1,
             "video_small_1.mp4",
             applicationContext
@@ -61,16 +63,16 @@ class MainActivity : AppCompatActivity() {
 
     private val images: Array<File> by lazy {
         arrayOf(
-            Utils.copyFileToExternalStorage(R.drawable.image1, "image1.png", applicationContext),
-            Utils.copyFileToExternalStorage(R.drawable.image2, "image2.png", applicationContext),
-            Utils.copyFileToExternalStorage(R.drawable.image3, "image3.png", applicationContext),
-            Utils.copyFileToExternalStorage(R.drawable.image4, "image4.png", applicationContext),
-            Utils.copyFileToExternalStorage(R.drawable.image5, "image5.png", applicationContext)
+            FileManager(this).copyFileToExternalStorage(R.drawable.image1, "image1.png", applicationContext),
+            FileManager(this).copyFileToExternalStorage(R.drawable.image2, "image2.png", applicationContext),
+            FileManager(this).copyFileToExternalStorage(R.drawable.image3, "image3.png", applicationContext),
+            FileManager(this).copyFileToExternalStorage(R.drawable.image4, "image4.png", applicationContext),
+            FileManager(this).copyFileToExternalStorage(R.drawable.image5, "image5.png", applicationContext)
         )
     }
 
     private val font: File by lazy {
-        Utils.copyFileToExternalStorage(
+        FileManager(this).copyFileToExternalStorage(
             R.font.roboto_black,
             "myFont.ttf",
             applicationContext
@@ -109,9 +111,40 @@ class MainActivity : AppCompatActivity() {
                 RESULT_CODE
             )
         }
+        initListeners()
     }
 
     private fun initListeners() {
+        findViewById<Button>(R.id.btnMergeAudioVideo).setOnClickListener {
+            AudioVideoMerger.with(this)
+                .audioFile(audio)
+                .videoFile(video)
+                .outputPath(FileManager(this).outputPath + "video")
+                .outputFileName("merged_" + System.currentTimeMillis() + ".mp4")
+                .callback(this@MainActivity)
+                .merge()
+
+            //ProgressDialog.show(supportFragmentManager, AudioVideoMerger.TAG)
+        }
+    }
+
+    override fun onProgress(progress: String) {
+
+    }
+
+    override fun onSuccess(convertedFile: File, type: String) {
+        VideoDialog.show(supportFragmentManager, convertedFile)
+    }
+
+    override fun onFailure(error: Exception) {
+
+    }
+
+    override fun onNotAvailable(error: Exception) {
+
+    }
+
+    override fun onFinish() {
 
     }
 

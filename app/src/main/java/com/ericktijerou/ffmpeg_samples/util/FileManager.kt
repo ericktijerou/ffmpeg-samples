@@ -9,11 +9,11 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
 
-object Utils {
+class FileManager(private val context: Context) {
 
     val outputPath: String
         get() {
-            val path = Environment.getExternalStorageDirectory().toString() + File.separator + FOLDER_NAME + File.separator
+            val path = context.getExternalFilesDir(Environment.DIRECTORY_DCIM).toString() + File.separator + FOLDER_NAME + File.separator
 
             val folder = File(path)
             if (!folder.exists())
